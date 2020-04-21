@@ -1,0 +1,14 @@
+---
+- name: create a VPC
+  gcp_compute_network:
+    name: "{{vpc_name}}"
+    description: "{{description}}"
+    auto_create_subnetworks: yes
+    project: "{{project_id}}"
+    auth_kind: "{{auth_kind}}"
+    service_account_file: "{{credentials_file}}"
+    state: present
+  register: vpc_info
+# - name: get vpc info
+#   debug: 
+#     var: vpc_info

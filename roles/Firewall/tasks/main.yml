@@ -1,0 +1,38 @@
+---
+- name: create secure firewall rules
+  gcp_compute_firewall: 
+    name: "{{vpc_name}}-secure-rules"
+    description: "{{secure.rule_desc}}"
+    allowed: "{{secure.allowed}}"
+    source_ranges: "{{secure.source}}"
+    project: "{{project_id}}"
+    auth_kind: "{{auth_kind}}"
+    service_account_file: "{{credentials_file}}"
+    state: present
+    network: "{{vpc_info}}"
+
+
+- name: create private firewall rules
+  gcp_compute_firewall: 
+    name: "{{vpc_name}}-private-rules"
+    description: "{{private.rule_desc}}"
+    allowed: "{{private.allowed}}"
+    target_tags: "{{private.target}}"
+    source_tags: "{{private.source}}"    
+    project: "{{project_id}}"
+    auth_kind: "{{auth_kind}}"
+    service_account_file: "{{credentials_file}}"
+    state: present
+    network: "{{vpc_info}}"
+
+- name: create public firewall rules
+  gcp_compute_firewall: 
+    name: "{{vpc_name}}-public-rules"
+    description: "{{public.rule_desc}}"
+    allowed: "{{public.allowed}}"
+    target_tags: "{{public.target}}"
+    project: "{{project_id}}"
+    auth_kind: "{{auth_kind}}"
+    service_account_file: "{{credentials_file}}"
+    state: present
+    network: "{{vpc_info}}"

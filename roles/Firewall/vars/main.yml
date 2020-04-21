@@ -1,0 +1,37 @@
+---
+public:
+  rule_desc: "public-{{vpc_name}}-firewall rules"
+  source:
+    - "0.0.0.0/0"
+  target:
+    - http-server
+  allowed:
+    - ip_protocol: "tcp"
+      ports:
+        - '80' #http
+        - '443' #https
+      
+private:
+  rule_desc: "private-{{vpc_name}}-firewall rules"
+  source:
+    - application-server
+  target:
+    - managed-services
+  allowed:
+    - ip_protocol: "tcp"
+      ports:
+        - '3306' #MySQL
+        - '6379' #Redis
+        - '2049' #NFS
+        - '9200' #elasticsearch
+      
+secure:
+  rule_desc: "secure-{{vpc_name}}-firewall rules"
+  source:
+    - "{{public_ip.ansible_facts.ipify_public_ip}}/32"
+  allowed:
+    - ip_protocol: "tcp"
+      ports:
+        - '22' #ssh
+        - '3389' #rdp
+      

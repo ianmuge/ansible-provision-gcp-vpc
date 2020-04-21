@@ -1,0 +1,20 @@
+- name: Create GCP VPC Network
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars:
+    auth_kind: "{{lookup('env','GCP_AUTH_KIND')}}"
+    credentials_file: "{{lookup('env','GCP_SERVICE_ACCOUNT_FILE')}}"
+    project_id: "{{lookup('env','GCP_PROJECT')}}"
+    vpc_name: "test"
+  pre_tasks:
+    - name: get public IP
+      ipify_facts:
+      register: public_ip
+    - debug: var=public_ip
+    
+  roles:
+    - VPC
+    - Firewall
+  post_tasks:
+
